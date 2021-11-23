@@ -7,12 +7,12 @@ const drawImage = async () => {
     const image = await loadImage("./FeatureModels/BaseModels/beanos.png");
     context.drawImage(image, 0, 0, 1000, 1000);
     console.log("completed draw.");
-    saveLayer(canvas);
+    saveImage(canvas);
 };
 
 const saveImage = (_canvas) => {
-    fs.writeFileSync("./test.png", _canvas.toBuffer("image/png"));
+    fs.writeFileSync("./ResultImages/test.png", _canvas.toBuffer("image/png"));
     console.log("completed save.");
 };
 
-drawLayer();
+drawImage();
