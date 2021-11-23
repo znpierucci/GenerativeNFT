@@ -1,7 +1,7 @@
 const fs = require("fs");
 const myArgs = process.argv.slice(2);
 const {createCanvas, loadImage} = require("canvas");
-const {layers, width, height} = require("./FeatureModels/config.js")
+const {layers, width, height} = require("./feature_models/config.js")
 const console = require("console");
 const canvas = createCanvas(width, height);
 const context = canvas.getContext("2d");
