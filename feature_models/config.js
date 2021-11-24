@@ -9,34 +9,6 @@ const startEditionFrom = 1;
 const endEditionAt = 5;
 const totalNFTCount = 5;
 
-const rarityWeights = [
-  {
-    value: "legendary",
-    from: 1,
-    to: 1,
-  },
-  {
-    value: "super_rare",
-    from: 2,
-    to: 2,
-  },
-  {
-    value: "rare",
-    from: 3,
-    to: 3,
-  },
-  {
-    value: "uncommon",
-    from: 4,
-    to: 4,
-  },
-  {
-    value: "common",
-    from: 5,
-    to: totalNFTCount,
-  },
-];
-
 //remove the file extension of the image - file must be png/jpg (3 chars long)
 const cleanName = _str => {
     let name = _str.slice(0, -4);
@@ -60,22 +32,22 @@ const getElements = (path) => {
 const layers = [
     {
         elements: {
-          common: getElements(`${dir}/backgrounds/common`),
-          uncommon: getElements(`${dir}/backgrounds/uncommon`),
-          rare: getElements(`${dir}/backgrounds/rare`),
-          super_rare: getElements(`${dir}/backgrounds/super_rare`),
-          legendary: getElements(`${dir}/backgrounds/legendary`)
+          common: getElements(`${dir}/1-backgrounds/common`),
+          uncommon: getElements(`${dir}/1-backgrounds/uncommon`),
+          rare: getElements(`${dir}/1-backgrounds/rare`),
+          super_rare: getElements(`${dir}/1-backgrounds/super_rare`),
+          legendary: getElements(`${dir}/1-backgrounds/legendary`)
         },
         position: {x: 0, y: 0},
         size: {width: width, height: height},
     },
     {
       elements: {
-        common: getElements(`${dir}/base_models/common`),
-        uncommon: getElements(`${dir}/base_models/uncommon`),
-        rare: getElements(`${dir}/base_models/rare`),
-        super_rare: getElements(`${dir}/base_models/super_rare`),
-        legendary: getElements(`${dir}/base_models/legendary`)
+        common: getElements(`${dir}/2-base_models/common`),
+        uncommon: getElements(`${dir}/2-base_models/uncommon`),
+        rare: getElements(`${dir}/2-base_models/rare`),
+        super_rare: getElements(`${dir}/2-base_models/super_rare`),
+        legendary: getElements(`${dir}/2-base_models/legendary`)
       },
         position: {x: 0, y: 0},
         size: {width: width, height: height},
@@ -90,6 +62,5 @@ module.exports = {
   baseImageUri, 
   totalNFTCount, 
   startEditionFrom, 
-  endEditionAt,
-  rarityWeights
+  endEditionAt
 };
