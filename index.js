@@ -1,8 +1,8 @@
 const fs = require("fs");
 const {createCanvas, loadImage} = require("canvas");
 const { layers, width, height,
-    description, baseImageUri, rarityWeights, 
-    totalNFTCount, startEditionFrom, endEditionAt} = require("./feature_models/config.js");
+    description, baseImageUri, 
+    totalNFTCount} = require("./feature_models/config.js");
 const console = require("console");
 const { SSL_OP_LEGACY_SERVER_CONNECT } = require("constants");
 const canvas = createCanvas(width, height);
@@ -94,33 +94,17 @@ const saveImage = (_nftCount) => {
 const chooseRarity = () => {
     rarityNum = Math.random();
     if (rarityNum < 0.2) {
-      console.log("made it to legendary");
       return "legendary";
     } else if (rarityNum < 0.4) {
-      console.log("made it to super rare");
       return "super_rare";
     } else if (rarityNum < 0.6) {
-      console.log("made it to rare");
       return "rare";
     } else if (rarityNum < 0.8) {
-      console.log("made it to uncommon");
       return "uncommon";
     } else {
-      console.log("made it to common");
       return "common";
     }
   }
-
-//get rarity
-const getRarity = (_currentNFT) => {
-    let rarity = "";
-    rarityWeights.forEach(rarityWeight => {
-        if (_currentNFT >= rarityWeight.from && _currentNFT <= rarityWeight.to) {
-            rarity = rarityWeight.value
-        }
-    });
-    return rarity;
-};
 
 //check for unique DNA
 const isDNAUnique = (_dnaList = [], _dna = []) => {
@@ -140,21 +124,17 @@ const createDNA = (_layers, _rarity) => {
 
 //write our metadata
 const writeMetaData = (_data) => {
-    //TODO: format it better
     fs.writeFileSync("./output/metadata.json", _data);
 };
 
 //loop for each layer of each nft and draw
 const startBatch = async () => {
     writeMetaData("");
-    let currentNFT = startEditionFrom;
+    let currentNFT = 1;
     while (currentNFT <= totalNFTCount) {
-
-        let rarity = getRarity(currentNFT);
+        let rarity = chooseRarity(currentNFT);
         console.log(rarity);
-
         let newDNA = createDNA(layers, rarity);
-
         //if (isDNAUnique(dnaList, newDNA)) {
             let results = constructLayerToDNA(newDNA, layers, rarity);
             let loadedElements = [];
