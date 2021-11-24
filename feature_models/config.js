@@ -6,7 +6,7 @@ const height = 1000;
 
 //rarity file extensions
 const rarity = [
-    {key: "_common", val: "common"},
+    {key: "", val: "common"},
     {key: "_uncommon", val: "uncommon"},
     {key: "_rare", val: "rare"},
     {key: "_super", val: "super rare"},
@@ -55,16 +55,16 @@ const layers = [
     {
         id: 1,
         name: "background",
-        location: `${dir}/backgrounds/`,
-        elements: getElements(`${dir}/backgrounds/`),
+        location: `${dir}/backgrounds/common/`,
+        elements: getElements(`${dir}/backgrounds/common/`),
         position: {x: 0, y: 0},
         size: {width: width, height: height},
     },
     {
         id: 2,
         name: "base model",
-        location: `${dir}/base_models/`,
-        elements: getElements(`${dir}/base_models/`),
+        location: `${dir}/base_models/common/`,
+        elements: getElements(`${dir}/base_models/common/`),
         position: {x: 0, y: 0},
         size: {width: width, height: height},
     },

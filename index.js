@@ -84,16 +84,16 @@ const saveImage = (_canvas, _nftCount) => {
 };
 
 //check for unique DNA
-const isDNAUnique = (_dnaList = [], _dna = []) => {
-    let foundDNA = _dnaList.find((i) => i.join("") === _dna.join(""));
-    return foundDNA == undefined ? true : false;
-};
+// const isDNAUnique = (_dnaList = [], _dna = []) => {
+//     let foundDNA = _dnaList.find((i) => i.join("") === _dna.join(""));
+//     return foundDNA == undefined ? true : false;
+// };
 
 //create each NFT's DNA
-const createDNA = (_length) => {
-    let random = Math.floor(Number(`1e${_length}`) + Math.random() * Number(`9e${_length}`));
-    return random;
-};
+// const createDNA = (_length) => {
+//     let random = Math.floor(Number(`1e${_length}`) + Math.random() * Number(`9e${_length}`));
+//     return random;
+// };
 
 //write our metadata
 const writeMetaData = () => {
