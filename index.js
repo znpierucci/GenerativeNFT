@@ -15,7 +15,6 @@ var attributes = [];
 var hash = [];
 var decodedHash =[];
 var dnaList = [];
-var rarity = "";
 
 //add metadata to NFT
 const addMetadata = (_nftCount) => {
@@ -46,31 +45,8 @@ const addAttributes = (_element, _layer) => {
     decodedHash.push({[_layer.id]: _element.id});
 };
 
-const chooseRarity = () => {
-    rarityNum = Math.random();
-    switch (rarityNum) {
-        case rarityNum < 0.005:
-            rarity = "legendary";
-            break;
-        case rarityNum < 0.01:
-            rarity = "super rare";
-            break;
-        case rarityNum < 0.1:
-            rarity = "rare";
-            break;
-        case rarityNum < 0.4:
-            rarity = "uncommon";
-            break;
-        default:
-            rarity = "common";
-    }
-}
-
 //draw each layer
 const drawLayer = async (_layer, _nftCount) => {
-    //TODO: insert random function with weight
-    chooseRarity();
-    //choose from rarity
     let element = _layer.elements[Math.floor(Math.random() * _layer.elements.length)];
     addAttributes(element, _layer);
     const image = await loadImage(`${_layer.location}${element.fileName}`);
