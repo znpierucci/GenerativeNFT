@@ -6,7 +6,7 @@ const height = 1000;
 
 //rarity file extensions
 const rarity = [
-    {key: "", val: "common"},
+    {key: "_common", val: "common"},
     {key: "_uncommon", val: "uncommon"},
     {key: "_rare", val: "rare"},
     {key: "_super", val: "super rare"},
