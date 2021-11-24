@@ -31,7 +31,7 @@ const cleanName = _str => {
     return name;
   };
 
-//
+//get the elements
 const getElements = (path) => {
     return fs
         .readdirSync(path)
@@ -51,16 +51,16 @@ const layers = [
     {
         id: 1,
         name: "background",
-        location: `${dir}/backgrounds/${chooseRarity()}/`,
-        elements: getElements(`${dir}/backgrounds/${chooseRarity()}/`),
+        location: `${dir}/backgrounds/common/`,
+        elements: getElements(`${dir}/backgrounds/common/`),
         position: {x: 0, y: 0},
         size: {width: width, height: height},
     },
     {
         id: 2,
         name: "base model",
-        location: `${dir}/base_models/${chooseRarity()}/`,
-        elements: getElements(`${dir}/base_models/${chooseRarity()}/`),
+        location: `${dir}/base_models/common/`,
+        elements: getElements(`${dir}/base_models/common/`),
         position: {x: 0, y: 0},
         size: {width: width, height: height},
     },
