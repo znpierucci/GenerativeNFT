@@ -2,7 +2,7 @@ const fs = require("fs");
 const {createCanvas, loadImage} = require("canvas");
 const { layers, width, height,
     description, baseImageUri, 
-    totalNFTCount, startEditionFrom, endEditionAt} = require("./feature_models/config.js");
+    totalNFTCount} = require("./feature_models/config.js");
 const console = require("console");
 const { SSL_OP_LEGACY_SERVER_CONNECT } = require("constants");
 const canvas = createCanvas(width, height);
@@ -130,7 +130,7 @@ const writeMetaData = (_data) => {
 //loop for each layer of each nft and draw
 const startBatch = async () => {
     writeMetaData("");
-    let currentNFT = startEditionFrom;
+    let currentNFT = 1;
     while (currentNFT <= totalNFTCount) {
         let rarity = chooseRarity(currentNFT);
         console.log(rarity);

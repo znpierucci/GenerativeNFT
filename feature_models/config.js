@@ -5,8 +5,6 @@ const width = 1000;
 const height = 1000;
 const description = "This NFT was made by Pooch.";
 const baseImageUri = "https://pooch/nft";
-const startEditionFrom = 1;
-const endEditionAt = 5;
 const totalNFTCount = 5;
 
 //remove the file extension of the image - file must be png/jpg (3 chars long)
@@ -60,7 +58,5 @@ module.exports = {
   height,
   description, 
   baseImageUri, 
-  totalNFTCount, 
-  startEditionFrom, 
-  endEditionAt
+  totalNFTCount
 };
