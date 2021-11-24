@@ -17,8 +17,8 @@ const chooseRarity = () => {
     console.log("made it to rare");
     return "rare";
   } else if (rarityNum < 0.8) {
-    return "uncommon";
     console.log("made it to uncommon");
+    return "uncommon";
   } else {
     console.log("made it to common");
     return "common";
@@ -49,16 +49,12 @@ const getElements = (path) => {
 //layers of the NFT in order
 const layers = [
     {
-        id: 1,
-        name: "background",
         location: `${dir}/backgrounds/common/`,
         elements: getElements(`${dir}/backgrounds/common/`),
         position: {x: 0, y: 0},
         size: {width: width, height: height},
     },
     {
-        id: 2,
-        name: "base model",
         location: `${dir}/base_models/common/`,
         elements: getElements(`${dir}/base_models/common/`),
         position: {x: 0, y: 0},
