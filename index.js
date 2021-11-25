@@ -32,6 +32,7 @@ const addMetadata = (_hash, _location, _nftCount) => {
 const addAttributes = (_element) => {
     let selectedElement = _element.layer.selectedElement;
     attributesList.push({
+        type: selectedElement.type,
         name: selectedElement.name,
         rarity: selectedElement.rarity,
     });
@@ -144,8 +145,7 @@ const startBatch = async () => {
                 //drawBackground();
                 elementArray.forEach((element) => {
                     drawElement(element);
-                });
-                //signImage(`#${currentNFT}`);
+                });                //signImage(`#${currentNFT}`);
                 saveImage(currentNFT);
                 addMetadata(newHash, newLocation, currentNFT);
             });
