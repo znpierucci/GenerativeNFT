@@ -1,7 +1,7 @@
 const fs = require("fs");
 const {createCanvas, loadImage} = require("canvas");
 const { layers, width, height,
-    description, baseImageUri, 
+    projectName, description, baseImageUri, 
     totalNFTCount} = require("./feature_models/config.js");
 const console = require("console");
 const { SSL_OP_LEGACY_SERVER_CONNECT } = require("constants");
@@ -16,7 +16,7 @@ const addMetadata = (_dna, _nftCount) => {
     let dateTime = Date.now();
     let tempMetadata = {
         dna: _dna.join(""),
-        name: `#${_nftCount}`,
+        name: `${projectName} #${_nftCount}`,
         description: description,
         image: `${baseImageUri}/${_nftCount}`,
         id: _nftCount,
@@ -68,7 +68,7 @@ const constructLayerToDNA = (_dna = [], _layers = [], _rarities = []) => {
 
 //save each image
 const saveImage = (_nftCount) => {
-    fs.writeFileSync(`./output/test#${_nftCount}.png`, canvas.toBuffer("image/png"));
+    fs.writeFileSync(`./output/${projectName}#${_nftCount}.png`, canvas.toBuffer("image/png"));
 };
 
 //chooses rarity
@@ -99,7 +99,6 @@ const generateRarityArray = (_amount) => {
     }
     return rarities;
 };
-
 
 //check for unique DNA
 const isDNAUnique = (_dnaList = [], _dna = []) => {
@@ -145,7 +144,7 @@ const startBatch = async () => {
                 saveImage(currentNFT);
                 addMetadata(newDNA, currentNFT);
             });
-            console.log("creating nft " + currentNFT);
+            console.log("Created NFT #" + currentNFT);
             dnaList.push(newDNA);
             currentNFT++;
         //} else {

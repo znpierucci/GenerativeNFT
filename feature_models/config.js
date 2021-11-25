@@ -3,6 +3,8 @@ const dir = __dirname;
 
 const width = 1000;
 const height = 1000;
+
+const projectName = "Pooch";
 const description = "This NFT was made by Pooch.";
 const baseImageUri = "https://pooch/nft";
 const totalNFTCount = 5;
@@ -56,6 +58,7 @@ module.exports = {
   layers, 
   width, 
   height,
+  projectName,
   description, 
   baseImageUri, 
   totalNFTCount
