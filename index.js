@@ -68,7 +68,7 @@ const constructLayerToDNA = (_dna = [], _layers = [], _rarities = []) => {
 
 //save each image
 const saveImage = (_nftCount) => {
-    fs.writeFileSync(`./output/test#${_nftCount}.png`, canvas.toBuffer("image/png"));
+    fs.writeFileSync(`./output/${projectName}#${_nftCount}.png`, canvas.toBuffer("image/png"));
 };
 
 //chooses rarity
