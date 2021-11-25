@@ -1,5 +1,6 @@
 const fs = require("fs");
 const {createCanvas, loadImage} = require("canvas");
+var crypto = require('crypto');
 const { layers, width, height,
     projectName, description, baseImageUri, 
     totalNFTCount} = require("./feature_models/config.js");
@@ -88,7 +89,7 @@ const chooseRarity = () => {
     }
 };
 
-//generate rarities based on how many layers exist
+//generate a rarity for each layer
 const generateRarityArray = (_amount) => {
     let rarities = [];
     let count = 0;
@@ -131,7 +132,7 @@ const startBatch = async () => {
     while (currentNFT <= totalNFTCount) {
         let rarities = generateRarityArray(layers.length);
         let newLocation = createLocation(layers, rarities);
-        let newHash = "";
+        let newHash = crypto.createHash('sha256').update("insertStringHere").digest('hex');;
         if (isHashUnique(hashList, newHash)) {
             let results = constructLayerFromLocation(newLocation, layers, rarities);
             let loadedElements = [];
