@@ -9,13 +9,14 @@ const canvas = createCanvas(width, height);
 const context = canvas.getContext("2d");
 var metadataList = [];
 var attributesList = [];
-var dnaList = [];
+var hashList = [];
 
 //add metadata to NFT
-const addMetadata = (_dna, _nftCount) => {
+const addMetadata = (_hash, _location, _nftCount) => {
     let dateTime = Date.now();
     let tempMetadata = {
-        dna: _dna.join(""),
+        hash: _hash,
+        TESTINGlocationTESTING: _location.join(""),
         name: `${projectName} #${_nftCount}`,
         description: description,
         image: `${baseImageUri}/${_nftCount}`,
@@ -53,9 +54,9 @@ const drawElement = (_element) => {
     addAttributes(_element);
 };
 
-const constructLayerToDNA = (_dna = [], _layers = [], _rarities = []) => {
-    let mappedDNAToLayers = _layers.map((layer, index) => {
-        let selectedElement = layer.elements[_rarities[index]][_dna[index]];
+const constructLayerFromLocation = (_location = [], _layers = [], _rarities = []) => {
+    let mappedLocationToLayers = _layers.map((layer, index) => {
+        let selectedElement = layer.elements[_rarities[index]][_location[index]];
         return {
             location: layer.location,
             position: layer.position,
@@ -63,7 +64,7 @@ const constructLayerToDNA = (_dna = [], _layers = [], _rarities = []) => {
             selectedElement: selectedElement
         };
     });
-    return mappedDNAToLayers;
+    return mappedLocationToLayers;
 };
 
 //save each image
@@ -100,16 +101,18 @@ const generateRarityArray = (_amount) => {
     return rarities;
 };
 
-//check for unique DNA
-const isDNAUnique = (_dnaList = [], _dna = []) => {
-    let foundDNA = _dnaList.find((i) => i.join("") === _dna.join(""));
-    return foundDNA == undefined ? true : false;
+//check for unique Hash
+const isHashUnique = (_hashList = [], _newHash = []) => {
+    // let foundHash = _hashList.find((i) => i.join("") === _newHash.join(""));
+    // return foundHash == undefined ? true : false;
+    return true;
 };
 
-//create each NFT's DNA
-const createDNA = (_layers, _rarities = []) => {
+//create each NFT's Location
+const createLocation = (_layers, _rarities = []) => {
     let random = [];
     _layers.forEach((layer, index) => {
+        //choose random attribute
         let num = Math.floor(Math.random() * layer.elements[_rarities[index]].length);
         random.push(num);
     });
@@ -127,9 +130,10 @@ const startBatch = async () => {
     let currentNFT = 1;
     while (currentNFT <= totalNFTCount) {
         let rarities = generateRarityArray(layers.length);
-        let newDNA = createDNA(layers, rarities);
-        //if (isDNAUnique(dnaList, newDNA)) {
-            let results = constructLayerToDNA(newDNA, layers, rarities);
+        let newLocation = createLocation(layers, rarities);
+        let newHash = "";
+        if (isHashUnique(hashList, newHash)) {
+            let results = constructLayerFromLocation(newLocation, layers, rarities);
             let loadedElements = [];
             results.forEach((layer) => {
                 loadedElements.push(loadLayerImage(layer));
@@ -142,14 +146,14 @@ const startBatch = async () => {
                 });
                 //signImage(`#${currentNFT}`);
                 saveImage(currentNFT);
-                addMetadata(newDNA, currentNFT);
+                addMetadata(newHash, newLocation, currentNFT);
             });
             console.log("Created NFT #" + currentNFT);
-            dnaList.push(newDNA);
+            hashList.push(newHash);
             currentNFT++;
-        //} else {
-        //    console.log("DNA Exists!");
-        //}
+        } else {
+           console.log("NFT Already Exists! Rerolling...");
+        }
     }
     writeMetaData(JSON.stringify(metadataList));
 };
