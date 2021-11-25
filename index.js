@@ -53,9 +53,9 @@ const drawElement = (_element) => {
     addAttributes(_element);
 };
 
-const constructLayerToDNA = (_dna = [], _layers = [], _rarity) => {
+const constructLayerToDNA = (_dna = [], _layers = [], _rarities = []) => {
     let mappedDNAToLayers = _layers.map((layer, index) => {
-        let selectedElement = layer.elements[_rarity][_dna[index]];
+        let selectedElement = layer.elements[_rarities[index]][_dna[index]];
         return {
             location: layer.location,
             position: layer.position,
@@ -65,25 +65,6 @@ const constructLayerToDNA = (_dna = [], _layers = [], _rarity) => {
     });
     return mappedDNAToLayers;
 };
-
-// const signImage = () => {
-//     context.fillStyle = "#000000";
-//     context.font = "bold 30pt Courier";
-//     context.textBaseline = "top";
-//     context.textAlign = "left";
-//     context.fillText(_sig, 40, 40);
-// };
-
-// const genColor = () => {
-//     let hue = Math.floor(Math.random() * 360);
-//     let pastel = `hsl(${hue}, 100%, 85%)`;
-//     return pastel;
-// }
-
-// const drawBackground = () => {
-//     context.fillStyle = genColor()";
-//     context.fillRect(0, 0, width, height);
-// };
 
 //save each image
 const saveImage = (_nftCount) => {
@@ -104,7 +85,21 @@ const chooseRarity = () => {
     } else {
       return "common";
     }
-  }
+};
+
+//generate rarities based on how many layers exist
+const generateRarityArray = (_amount) => {
+    let rarities = [];
+    let count = 0;
+    while (count < _amount) {
+        let rarity = chooseRarity();
+        console.log(rarity);
+        rarities.push(rarity);
+        count++;
+    }
+    return rarities;
+};
+
 
 //check for unique DNA
 const isDNAUnique = (_dnaList = [], _dna = []) => {
@@ -113,10 +108,10 @@ const isDNAUnique = (_dnaList = [], _dna = []) => {
 };
 
 //create each NFT's DNA
-const createDNA = (_layers, _rarity) => {
+const createDNA = (_layers, _rarities = []) => {
     let random = [];
-    _layers.forEach((layer) => {
-        let num = Math.floor(Math.random() * layer.elements[_rarity].length);
+    _layers.forEach((layer, index) => {
+        let num = Math.floor(Math.random() * layer.elements[_rarities[index]].length);
         random.push(num);
     });
     return random;
@@ -132,11 +127,10 @@ const startBatch = async () => {
     writeMetaData("");
     let currentNFT = 1;
     while (currentNFT <= totalNFTCount) {
-        let rarity = chooseRarity(currentNFT);
-        console.log(rarity);
-        let newDNA = createDNA(layers, rarity);
+        let rarities = generateRarityArray(layers.length);
+        let newDNA = createDNA(layers, rarities);
         //if (isDNAUnique(dnaList, newDNA)) {
-            let results = constructLayerToDNA(newDNA, layers, rarity);
+            let results = constructLayerToDNA(newDNA, layers, rarities);
             let loadedElements = [];
             results.forEach((layer) => {
                 loadedElements.push(loadLayerImage(layer));
@@ -163,3 +157,26 @@ const startBatch = async () => {
 
 //start script!
 startBatch();
+
+
+
+
+
+// const signImage = () => {
+//     context.fillStyle = "#000000";
+//     context.font = "bold 30pt Courier";
+//     context.textBaseline = "top";
+//     context.textAlign = "left";
+//     context.fillText(_sig, 40, 40);
+// };
+
+// const genColor = () => {
+//     let hue = Math.floor(Math.random() * 360);
+//     let pastel = `hsl(${hue}, 100%, 85%)`;
+//     return pastel;
+// }
+
+// const drawBackground = () => {
+//     context.fillStyle = genColor()";
+//     context.fillRect(0, 0, width, height);
+// };
