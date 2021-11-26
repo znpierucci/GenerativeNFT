@@ -111,11 +111,10 @@ const isHashUnique = (_hashList = [], _newHash = []) => {
 
 const generateHash = (_attributes) => {
     let attributeString = "";
-    _attributes.forEach((attribute, index) => {
-        attributeString+=attribute[index];
+    _attributes.forEach((attribute) => {
+        attributeString+=attribute.name;
     });
     let hash = crypto.createHash('sha256').update(attributeString).digest('hex');
-    console.log("attribute string: " + attributeString);
     return hash;
 };
 
@@ -148,18 +147,18 @@ const startBatch = async () => {
             loadedElements.push(loadLayerImage(layer));
         });
         await Promise.all(loadedElements).then((elementArray) => {
-            
             elementArray.forEach((element) => {
                 drawElement(element);
             });   
             let hash = generateHash(attributesList);
+            //check for hash here?
             hashList.push(hash);        
             saveImage(currentNFT);
             addMetadata(hash, currentNFT);
         });
         console.log("Created NFT #" + currentNFT);
         //need a function to check if hash is unique, 
-        //if hash is not unique, do not increment counter or save metadata
+        //if hash is not unique, do not increment counter, save image, or save metadata
         //should re-iterate over the same image and metadata
         currentNFT++;
     }
