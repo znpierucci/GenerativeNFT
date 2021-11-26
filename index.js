@@ -13,11 +13,10 @@ var attributesList = [];
 var hashList = [];
 
 //add metadata to NFT
-const addMetadata = (_hash, _location, _nftCount) => {
+const addMetadata = (_hash, _nftCount) => {
     let dateTime = Date.now();
     let tempMetadata = {
         hash: _hash,
-        TESTINGlocationTESTING: _location.join(""),
         name: `${projectName} #${_nftCount}`,
         description: description,
         image: `${baseImageUri}/${_nftCount}`,
@@ -110,6 +109,15 @@ const isHashUnique = (_hashList = [], _newHash = []) => {
     return true;
 };
 
+const generateHash = (_attributes) => {
+    let attributeString = "";
+    _attributes.forEach((attribute) => {
+        attributeString+=attribute.name;
+    });
+    let hash = crypto.createHash('sha256').update(attributeString).digest('hex');
+    return hash;
+};
+
 //create each NFT's Location
 const createLocation = (_layers, _rarities = []) => {
     let random = [];
@@ -133,28 +141,26 @@ const startBatch = async () => {
     while (currentNFT <= totalNFTCount) {
         let rarities = generateRarityArray(layers.length);
         let newLocation = createLocation(layers, rarities);
-        let newHash = crypto.createHash('sha256').update("insertStringHere").digest('hex');;
-        if (isHashUnique(hashList, newHash)) {
-            let results = constructLayerFromLocation(newLocation, layers, rarities);
-            let loadedElements = [];
-            results.forEach((layer) => {
-                loadedElements.push(loadLayerImage(layer));
-            });
-            await Promise.all(loadedElements).then((elementArray) => {
-                //context.clearRect(0, 0, width, height);
-                //drawBackground();
-                elementArray.forEach((element) => {
-                    drawElement(element);
-                });                //signImage(`#${currentNFT}`);
-                saveImage(currentNFT);
-                addMetadata(newHash, newLocation, currentNFT);
-            });
-            console.log("Created NFT #" + currentNFT);
-            hashList.push(newHash);
-            currentNFT++;
-        } else {
-           console.log("NFT Already Exists! Rerolling...");
-        }
+        let results = constructLayerFromLocation(newLocation, layers, rarities);
+        let loadedElements = [];
+        results.forEach((layer) => {
+            loadedElements.push(loadLayerImage(layer));
+        });
+        await Promise.all(loadedElements).then((elementArray) => {
+            elementArray.forEach((element) => {
+                drawElement(element);
+            });   
+            let hash = generateHash(attributesList);
+            //check for hash here?
+            hashList.push(hash);        
+            saveImage(currentNFT);
+            addMetadata(hash, currentNFT);
+        });
+        console.log("Created NFT #" + currentNFT);
+        //need a function to check if hash is unique, 
+        //if hash is not unique, do not increment counter, save image, or save metadata
+        //should re-iterate over the same image and metadata
+        currentNFT++;
     }
     writeMetaData(JSON.stringify(metadataList));
 };
@@ -184,3 +190,7 @@ startBatch();
 //     context.fillStyle = genColor()";
 //     context.fillRect(0, 0, width, height);
 // };
+
+//context.clearRect(0, 0, width, height);
+//drawBackground();
+//signImage(`#${currentNFT}`);
