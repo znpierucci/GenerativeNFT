@@ -8,7 +8,7 @@ const height = 1000;
 const projectName = "Pooch";
 const description = "This NFT was made by Pooch.";
 const baseImageUri = "https://pooch/nft";
-const totalNFTCount = 5;
+const totalNFTCount = 10;
 
 //remove the file extension of the image - file must be png/jpg (3 chars long)
 const cleanName = (_str) => {
@@ -18,9 +18,9 @@ const cleanName = (_str) => {
 
 //get the attribute type - travel 2 directories backward
 const getAttributeType = (_path) => {
-  let attribute = "test";
-  //console.log("path:"+_path);
-  return attribute;
+  let attribute = _path.split('/');
+  attribute = attribute[attribute.length - 3];
+  return attribute.substring(2);
 }
 
 //get rarity
