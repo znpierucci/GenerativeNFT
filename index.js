@@ -10,15 +10,13 @@ const canvas = createCanvas(width, height);
 const context = canvas.getContext("2d");
 var metadataList = [];
 var attributesList = [];
-var hashList = [];
-var locationList = [];
-var duplicateHashes = [];
+var locationAndRarityList = [];
 
 //add metadata to NFT
-const addMetadata = (_hash, _nftCount) => {
+const addMetadata = (_newLocationAndRarity, _nftCount) => {
     let dateTime = Date.now();
     let tempMetadata = {
-        hash: _hash,
+        hash: crypto.createHash('sha256').update(_newLocationAndRarity.join("")).digest('hex'),
         name: `${projectName} #${_nftCount}`,
         description: description,
         image: `${baseImageUri}/${projectName}#${_nftCount}.png`,
@@ -104,23 +102,20 @@ const generateRarityArray = (_amount) => {
     return rarities;
 };
 
-//check for unique Hash
-const isHashUnique = (_hashList = [], _newHash) => {
-    return _hashList.includes(_newHash);
-};
-
-//check for unique file location
-const isLocationUnique = (_locationList = [], _newLocation) => {
+//check for unique file locations
+const isLocationUnique = (_locationAndRarityList = [], _newLocationAndRarity = []) => {
+    //let found = _locationAndRarityList.find((i) => i.join("") === _newLocationAndRarity.join(""));
+    //return found == undefined ? true : false;
     return true;
 };
 
-const generateHash = (_attributes) => {
-    let attributeString = "";
-    _attributes.forEach((attribute) => {
-        attributeString+=attribute.name;
+const createLocationAndRarityArray = (_newLocation = [], _rarities = []) => {
+    let locationAndRarity = [];
+    _rarities.forEach((rarity, index) => {
+        let current = _newLocation[index]+rarity;
+        locationAndRarity.push(current);
     });
-    let hash = crypto.createHash('sha256').update(attributeString).digest('hex');
-    return hash;
+    return locationAndRarity;
 };
 
 //create each NFT's Location
@@ -153,7 +148,8 @@ const startBatch = async () => {
     while (currentNFT <= totalNFTCount) {
         let rarities = generateRarityArray(layers.length);
         let newLocation = createLocation(layers, rarities);
-        if (isLocationUnique(locationList, newLocation)) {
+        let newLocationAndRarity = createLocationAndRarityArray(newLocation, rarities);
+        if (isLocationUnique(locationAndRarityList, newLocationAndRarity)) {
             let results = constructLayerFromLocation(newLocation, layers, rarities);
             let loadedElements = [];
             results.forEach((layer) => {
@@ -162,24 +158,19 @@ const startBatch = async () => {
             await Promise.all(loadedElements).then((elementArray) => {
                 elementArray.forEach((element) => {
                     drawElement(element);
-                });   
-                let newHash = generateHash(attributesList);
-                hashList.push(newHash);
+                });
                 saveImage(currentNFT);
-                addMetadata(newHash, currentNFT);
+                addMetadata(newLocationAndRarity, currentNFT);
                 saveMetadataSingleFile(currentNFT);
-                if (!isHashUnique(hashList, newHash)) {
-                    duplicateHashes.push(newHash);
-                }
+                console.log("Created NFT #" + currentNFT);
             });
-            locationList.push(newLocation);
-            console.log("Created NFT #" + currentNFT);
+            locationAndRarityList.push(newLocationAndRarity);
             currentNFT++;
         } else {
             console.log("NFT Permutation Already Exists! Rerolling Features...");
         }
     }
-    console.log("Duplicate Hashes: " + duplicateHashes);
+    console.log(locationAndRarityList);
     writeMetaData(JSON.stringify(metadataList));
 };
 
