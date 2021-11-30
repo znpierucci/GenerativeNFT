@@ -21,7 +21,7 @@ const addMetadata = (_hash, _nftCount) => {
         hash: _hash,
         name: `${projectName} #${_nftCount}`,
         description: description,
-        image: `${baseImageUri}/${_nftCount}`,
+        image: `${baseImageUri}/${projectName}#${_nftCount}.png`,
         id: _nftCount,
         date: dateTime,
         attributes: attributesList,
