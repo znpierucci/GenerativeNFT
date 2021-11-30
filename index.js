@@ -6,7 +6,6 @@ const { layers, width, height,
     totalNFTCount} = require("./feature_models/config.js");
 const console = require("console");
 const { SSL_OP_LEGACY_SERVER_CONNECT } = require("constants");
-const { triggerAsyncId } = require("async_hooks");
 const canvas = createCanvas(width, height);
 const context = canvas.getContext("2d");
 var metadataList = [];
@@ -172,7 +171,7 @@ const startBatch = async () => {
             console.log("NFT Permutation Already Exists! Rerolling Features...");
         }
     }
-    console.log(duplicateHashes);
+    console.log("Duplicate Hashes: " + duplicateHashes);
     writeMetaData(JSON.stringify(metadataList));
 };
 
