@@ -28,6 +28,7 @@ const addMetadata = (_newDNA, _nftCount) => {
     attributesList = [];
 };
 
+//add the attributes to the list to be used in metadata
 const addAttributes = (_element) => {
     let selectedElement = _element.layer.selectedElement;
     attributesList.push({
@@ -37,6 +38,7 @@ const addAttributes = (_element) => {
     });
 };
 
+//loads each layers image
 const loadLayerImage = async (_layer) => {
     return new Promise(async(resolve) => {
         const image = await loadImage(`${_layer.selectedElement.path}`);
@@ -44,6 +46,7 @@ const loadLayerImage = async (_layer) => {
     });
 };
 
+//draws the element onto the image - called on each layer of each nft
 const drawElement = (_element) => {
     context.drawImage(
         _element.loadedImage, 
@@ -55,6 +58,7 @@ const drawElement = (_element) => {
     addAttributes(_element);
 };
 
+//creates a layer based off of the file location and rarity
 const constructLayerFromLocation = (_location = [], _layers = [], _rarities = []) => {
     let mappedLocationToLayers = _layers.map((layer, index) => {
         let selectedElement = layer.elements[_rarities[index]][_location[index]];
@@ -73,7 +77,7 @@ const saveImage = (_nftCount) => {
     fs.writeFileSync(`./output/${projectName}#${_nftCount}.png`, canvas.toBuffer("image/png"));
 };
 
-//chooses rarity
+//chooses rarity based off RNG and weights
 const chooseRarity = () => {
     rarityNum = Math.random();
     if (rarityNum < 0.2) {
@@ -108,6 +112,7 @@ const isLocationUnique = (_dnaList = [], _newDNA = []) => {
     return found == undefined ? true : false;
 };
 
+//creates a list of DNA based off of the rarity and location of attribute file
 const createDNAList = (_newLocation = [], _rarities = []) => {
     let dna = [];
     _rarities.forEach((rarity, index) => {

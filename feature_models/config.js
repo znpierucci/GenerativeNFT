@@ -8,7 +8,7 @@ const height = 1000;
 const projectName = "Pooch";
 const description = "This NFT was made by Pooch.";
 const baseImageUri = "https://pooch/nft";
-const totalNFTCount = 5;
+const totalNFTCount = 100;
 
 //remove the file extension of the image - file must be png/jpg (3 chars long)
 const cleanName = (_str) => {
