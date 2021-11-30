@@ -112,7 +112,7 @@ const isHashUnique = (_hashList = [], _newHash) => {
 //check for unique file location
 const isLocationUnique = (_locationList = [], _newLocation) => {
     return true;
-}
+};
 
 const generateHash = (_attributes) => {
     let attributeString = "";
@@ -139,6 +139,13 @@ const writeMetaData = (_data) => {
     fs.writeFileSync("./output/metadata.json", _data);
 };
 
+//write metadata to single file
+const saveMetadataSingleFile = (_nftCount) => {
+    fs.writeFileSync(`./output/${projectName}#${_nftCount}.json`, 
+    JSON.stringify(metadataList.find(meta => meta.id == _nftCount))
+    );
+};
+
 //loop for each layer of each nft and draw
 const startBatch = async () => {
     writeMetaData("");
@@ -160,6 +167,7 @@ const startBatch = async () => {
                 hashList.push(newHash);
                 saveImage(currentNFT);
                 addMetadata(newHash, currentNFT);
+                saveMetadataSingleFile(currentNFT);
                 if (!isHashUnique(hashList, newHash)) {
                     duplicateHashes.push(newHash);
                 }
