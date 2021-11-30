@@ -10,13 +10,13 @@ const canvas = createCanvas(width, height);
 const context = canvas.getContext("2d");
 var metadataList = [];
 var attributesList = [];
-var locationAndRarityList = [];
+var dnaList = [];
 
 //add metadata to NFT
-const addMetadata = (_newLocationAndRarity, _nftCount) => {
+const addMetadata = (_newDNA, _nftCount) => {
     let dateTime = Date.now();
     let tempMetadata = {
-        hash: crypto.createHash('sha256').update(_newLocationAndRarity.join("")).digest('hex'),
+        hash: crypto.createHash('sha256').update(_newDNA.join("")).digest('hex'),
         name: `${projectName} #${_nftCount}`,
         description: description,
         image: `${baseImageUri}/${projectName}#${_nftCount}.png`,
@@ -103,18 +103,18 @@ const generateRarityArray = (_amount) => {
 };
 
 //check for unique file locations
-const isLocationUnique = (_locationAndRarityList = [], _newLocationAndRarity = []) => {
-    let found = _locationAndRarityList.find((i) => i.join("") === _newLocationAndRarity.join(""));
+const isLocationUnique = (_dnaList = [], _newDNA = []) => {
+    let found = _dnaList.find((i) => i.join("") === _newDNA.join(""));
     return found == undefined ? true : false;
 };
 
-const createLocationAndRarityArray = (_newLocation = [], _rarities = []) => {
-    let locationAndRarity = [];
+const createDNAList = (_newLocation = [], _rarities = []) => {
+    let dna = [];
     _rarities.forEach((rarity, index) => {
         let current = _newLocation[index]+rarity;
-        locationAndRarity.push(current);
+        dna.push(current);
     });
-    return locationAndRarity;
+    return dna;
 };
 
 //create each NFT's Location
@@ -147,8 +147,8 @@ const startBatch = async () => {
     while (currentNFT <= totalNFTCount) {
         let rarities = generateRarityArray(layers.length);
         let newLocation = createLocation(layers, rarities);
-        let newLocationAndRarity = createLocationAndRarityArray(newLocation, rarities);
-        if (isLocationUnique(locationAndRarityList, newLocationAndRarity)) {
+        let newDNA = createDNAList(newLocation, rarities);
+        if (isLocationUnique(dnaList, newDNA)) {
             let results = constructLayerFromLocation(newLocation, layers, rarities);
             let loadedElements = [];
             results.forEach((layer) => {
@@ -159,17 +159,17 @@ const startBatch = async () => {
                     drawElement(element);
                 });
                 saveImage(currentNFT);
-                addMetadata(newLocationAndRarity, currentNFT);
+                addMetadata(newDNA, currentNFT);
                 saveMetadataSingleFile(currentNFT);
                 console.log("Created NFT #" + currentNFT);
             });
-            locationAndRarityList.push(newLocationAndRarity);
+            dnaList.push(newDNA);
             currentNFT++;
         } else {
             console.log("NFT Permutation Already Exists! Rerolling Features...");
         }
     }
-    console.log(locationAndRarityList);
+    console.log(dnaList);
     writeMetaData(JSON.stringify(metadataList));
 };
 
