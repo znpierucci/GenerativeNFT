@@ -104,9 +104,8 @@ const generateRarityArray = (_amount) => {
 
 //check for unique file locations
 const isLocationUnique = (_locationAndRarityList = [], _newLocationAndRarity = []) => {
-    //let found = _locationAndRarityList.find((i) => i.join("") === _newLocationAndRarity.join(""));
-    //return found == undefined ? true : false;
-    return true;
+    let found = _locationAndRarityList.find((i) => i.join("") === _newLocationAndRarity.join(""));
+    return found == undefined ? true : false;
 };
 
 const createLocationAndRarityArray = (_newLocation = [], _rarities = []) => {
